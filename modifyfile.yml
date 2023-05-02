@@ -1,0 +1,91 @@
+---
+- name: Connect to remote machine
+  hosts: 127.0.0.1
+  remote_user: ming
+
+  tasks:
+   - name: Modify 7001 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/redis.conf
+       block: |
+         port 7001
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7001.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+   - name: Modify 7002 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7002/redis.conf
+       block: |
+         port 7002
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7002.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+   - name: Modify 7003 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7003/redis.conf
+       block: |
+         port 7003
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7003.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+   - name: Modify 7004 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7004/redis.conf
+       block: |
+         port 7004
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7004.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+   - name: Modify 7005 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7005/redis.conf
+       block: |
+         port 7005
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7005.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+   - name: Modify 7006 file
+     blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7006/redis.conf
+       block: |
+         port 7006
+         daemonize yes
+         cluster-enabled yes
+         cluster-config-file /home/ming/redisPrac/ansible_redisCluster_sentinel/nodes-7006.conf
+         cluster-node-timeout 15000
+         protected-mode no
+         appendonly yes
+         
+       state: present
+
+

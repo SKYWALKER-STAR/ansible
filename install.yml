@@ -1,0 +1,34 @@
+---
+- name: Connect to remote machine
+  hosts: 127.0.0.1
+  remote_user: ming
+
+- name: compile redis from source
+  import_playbook: compile.yml
+
+- name: place configuration files
+  import_playbook: configFile.yml
+
+- name: place slave configuration files
+  import_playbook: configFile_slave.yml
+
+- name: place sentinel config files
+  import_playbook: configFile_sentinel.yml
+
+- name: modify config files
+  import_playbook: modifyfile.yml
+
+- name: create scripts
+  import_playbook: Scripts.yml
+
+- name: start redis instances
+  import_playbook: startRedis.yml
+
+- name: start cluster
+  import_playbook: startRedisCluster.yml
+
+- name: start slave
+  import_playbook: startSlave.yml
+
+- name: start sentinel
+  import_playbook: startSentinel.yml

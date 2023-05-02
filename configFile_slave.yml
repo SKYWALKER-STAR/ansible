@@ -1,0 +1,66 @@
+---
+- name: Connect to remote machine
+  hosts: 127.0.0.1
+  remote_user: ming
+
+  tasks:
+  - name: 7001_slave1
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave1
+      state: directory
+  - name: 7001_redis_slave1.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave1/redis.conf
+      state: touch
+  - name: Modify 7001_slave1 file
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave1/redis.conf
+       block: |
+         port 7011
+         daemonize yes
+         replicaof 127.0.0.1 7001
+         protected-mode no
+         appendonly yes
+       state: present
+
+  - name: mk 7001_slave2 dir
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave2
+      state: directory
+
+  - name: touch 7001_redis_slave2.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave2/redis.conf
+      state: touch
+
+  - name: Modify 7002_slave2 file
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave2/redis.conf
+       block: |
+         port 7012
+         daemonize yes
+         replicaof 127.0.0.1 7001
+         protected-mode no
+         appendonly yes
+       state: present
+
+  - name: mk 7001_slave3 dir
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave3
+      state: directory
+
+  - name: touch 7001_redis_slave3.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave3/redis.conf
+      state: touch
+
+  - name: Modify 7002_slave3 file
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave3/redis.conf
+       block: |
+         port 7013
+         daemonize yes
+         replicaof 127.0.0.1 7001
+         protected-mode no
+         appendonly yes
+       state: present

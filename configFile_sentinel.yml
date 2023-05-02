@@ -1,0 +1,51 @@
+---
+- name: Connect to remote machine
+  hosts: 127.0.0.1
+  remote_user: ming
+
+  tasks:
+  - name: sentinel
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel
+      state: directory
+  - name: sentinel_1.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_1.conf
+      state: touch
+
+  - name: sentinel_2.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_2.conf
+      state: touch
+
+  - name: sentinel_3.conf
+    file:
+      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_3.conf
+      state: touch
+
+  - name: Modify sentinel_1.conf
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_1.conf
+       block: |
+         port 26379
+         daemonize yes
+         sentinel monitor mymaster 127.0.0.1 7001 2
+       state: present
+
+  - name: Modify sentinel_2.conf
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_2.conf
+       block: |
+         port 26380
+         daemonize yes
+         sentinel monitor mymaster 127.0.0.1 7001 2
+       state: present
+
+  - name: Modify sentinel_3.conf
+    blockinfile:
+       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_3.conf
+       block: |
+         port 26381
+         daemonize yes
+         sentinel monitor mymaster 127.0.0.1 7001 2
+       state: present
