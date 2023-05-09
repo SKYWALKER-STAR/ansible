@@ -5,4 +5,4 @@
 
   tasks:
   - name: startCluster
-    shell: /bin/bash /home/ming/redisPrac/ansible_redisCluster_sentinel/createCluster.sh
+    shell: /bin/bash "{{ installroot }}"/createCluster.sh

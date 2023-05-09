@@ -5,13 +5,14 @@
 
   tasks:
   - name: Compile redis source code
-    shell: cd /home/ming/tar/redis-7.2 && make
+    #shell: cd /home/ming/tar/redis-7.2 && make
+    shell: cd "{{ source }}" && make MALLOC=libc
 
-  tasks:
-  - name: Install redis
-    shell: cd /home/ming/tar/redis-7.2 && sudo make install
+  #tasks:
+  #- name: Install redis
+    #shell: cd "{{ source }}" && sudo make install
 
-  tasks:
-  - name: Configure redis configuratio catelogs
-    shell: sudo mkdir -p /etc/redis
-    shell: sudo cp /home/ming/tar/redis-7.2/redis.conf /etc/redis/redis.conf
+  #tasks:
+  #- name: Configure redis configuration catelogs
+    #shell: sudo mkdir -p /etc/redis
+    #shell: sudo cp "{{ source }}/redis.conf" /etc/redis/redis.conf

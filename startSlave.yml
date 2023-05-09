@@ -5,4 +5,4 @@
 
   tasks:
   - name: start
-    shell: /bin/bash /home/ming/redisPrac/ansible_redisCluster_sentinel/startSlave.sh
+    shell: /bin/bash "{{ installroot }}/startSlave.sh"

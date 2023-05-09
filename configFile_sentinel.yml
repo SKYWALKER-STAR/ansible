@@ -6,26 +6,26 @@
   tasks:
   - name: sentinel
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel
+      path: "{{ installroot }}/sentinel"
       state: directory
   - name: sentinel_1.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_1.conf
+      path: "{{ installroot }}/sentinel/sentinel_1.conf"
       state: touch
 
   - name: sentinel_2.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_2.conf
+      path: "{{ installroot }}/sentinel/sentinel_2.conf"
       state: touch
 
   - name: sentinel_3.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_3.conf
+      path: "{{ installroot }}/sentinel/sentinel_3.conf"
       state: touch
 
   - name: Modify sentinel_1.conf
     blockinfile:
-       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_1.conf
+       path: "{{ installroot }}/sentinel/sentinel_1.conf"
        block: |
          port 26379
          daemonize yes
@@ -34,7 +34,7 @@
 
   - name: Modify sentinel_2.conf
     blockinfile:
-       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_2.conf
+       path: "{{ installroot }}/sentinel/sentinel_2.conf"
        block: |
          port 26380
          daemonize yes
@@ -43,7 +43,7 @@
 
   - name: Modify sentinel_3.conf
     blockinfile:
-       path: /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_3.conf
+       path: "{{ installroot }}/sentinel/sentinel_3.conf"
        block: |
          port 26381
          daemonize yes
