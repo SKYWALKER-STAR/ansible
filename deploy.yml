@@ -1,4 +1,8 @@
 ---
+- name: Connect to remote machine
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
 - name: place configuration files
   import_playbook: configFile.yml
 
@@ -25,9 +29,3 @@
 
 - name: start sentinel
   import_playbook: startSentinel.yml
-
-- name: Install Prometheus
-  import_playbook: installPrometheus.yml
-
-- name: Write Prometheus Configuration File
-  import_playbook: writeConfigFile_prometheus.yml

@@ -1,7 +1,7 @@
 ---
 - name: Connect to remote machine
-  hosts: 127.0.0.1
-  remote_user: ming
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
 
   tasks:
   - name: Compile redis source code

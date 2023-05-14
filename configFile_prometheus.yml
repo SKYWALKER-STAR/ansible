@@ -1,0 +1,20 @@
+---
+- name: Generate Prometheus File
+  hosts: ManagedHost
+  remote_user: root
+
+  tasks:
+  - name: Backup Prometheus Origin Configuration File
+    shell: cp "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml" "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml.bak"
+
+  - name: Delete Origin Prometheus Configuration File
+    ansible.builtin.file:
+     path: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml"
+     state: absent
+
+  - name: Generate My Prometheus Configuration File
+    ansible.builtin.file:
+     path: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml"
+     state: touch
+     owner: "{{ username }}"
+     mode: '644'

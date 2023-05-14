@@ -1,0 +1,22 @@
+---
+- name: Install prometheus
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Make Directory for Prometheus
+    file:
+      path: "{{ installroot_prometheus }}"
+      state: directory
+
+  - name: Install Prometheus
+    ansible.builtin.copy:
+      src: "{{ prometheus_binary_source }}"
+      dest: "{{ installroot_prometheus }}"
+      owner: "{{ username }}"
+      group: "{{ groupname }}"
+      mode: '644'
+  - name: Change Prometheus Mode
+    file:
+      path: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus"
+      mode: 744
