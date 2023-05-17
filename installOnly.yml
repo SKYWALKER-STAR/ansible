@@ -1,0 +1,24 @@
+---
+- name: place configuration files
+  import_playbook: configFile.yml
+
+- name: place slave configuration files
+  import_playbook: configFile_slave.yml
+
+- name: place sentinel config files
+  import_playbook: configFile_sentinel.yml
+
+- name: modify config files
+  import_playbook: modifyfile.yml
+
+- name: create scripts
+  import_playbook: Scripts.yml
+
+- name: install prometheus
+  import_playbook: installPrometheus.yml
+
+- name: Copy prometheus configuration file
+  import_playbook: copyPrometheusConfigurationFile.yml
+
+- name: install redis_exporter
+  import_playbook: installExporter.yml

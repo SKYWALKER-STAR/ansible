@@ -28,6 +28,3 @@
 
 - name: Install Prometheus
   import_playbook: installPrometheus.yml
-
-- name: Write Prometheus Configuration File
-  import_playbook: writeConfigFile_prometheus.yml

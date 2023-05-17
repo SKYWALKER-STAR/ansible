@@ -17,4 +17,5 @@
      path: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml"
      state: touch
      owner: "{{ username }}"
-     mode: '644'
+     mode: '766'
+

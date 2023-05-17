@@ -16,9 +16,9 @@
       dest: "{{ installroot_redis_exporter }}"
       owner: "{{ username }}"
       group: "{{ groupname }}"
-      mode: '644'
+      mode: '666'
 
   - name: Change Exporter Mode
     ansible.builtin.file:
       path: "{{ installroot_redis_exporter }}/{{ redis_exporter_package_name }}/redis_exporter"
-      mode: 744
+      mode: '777'

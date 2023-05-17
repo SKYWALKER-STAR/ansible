@@ -8,6 +8,8 @@
     file:
       path: "{{ installroot }}/startup.sh"
       state: touch
+      mode: '755'
+
   - name: writting start script
     blockinfile:
       path: "{{ installroot }}/startup.sh"
@@ -24,6 +26,7 @@
     file:
       path: "{{ installroot }}/stop.sh"
       state: touch
+      mode: '755'
   - name: writting stop script
     blockinfile:
       path: "{{ installroot }}/stop.sh"
@@ -41,13 +44,12 @@
         redis-cli -h 127.0.0.1 -p 26380 shutdown
         redis-cli -h 127.0.0.1 -p 26381 shutdown
       state: present
-  - name: change privelige
-    shell: chmod u+x "{{ installroot }}/stop.sh"
 
   - name: createCluster
     file:
       path: "{{ installroot }}/createCluster.sh"
       state: touch
+      mode: '655'
   - name: writting createCluster script
     blockinfile:
       path: "{{ installroot }}/createCluster.sh"
@@ -56,14 +58,13 @@
         yes
         EOF
       state: present
-  - name: change privelige
-    shell: chmod u+x "{{ installroot }}/createCluster.sh"
-
+      mode: '655'
 
   - name: create slave script
     file:
       path: "{{ installroot }}/startSlave.sh"
       state: touch
+      mode: '655'
 
   - name: writting slave script
     blockinfile:
@@ -74,13 +75,11 @@
         redis-server "{{ installroot }}/7001/slave3/redis.conf"
       state: present
 
-  - name: change privelige
-    shell: chmod u+x "{{ installroot }}/startSlave.sh"
-
   - name: create sentinel script
     file:
       path: "{{ installroot }}/startSentinel.sh"
       state: touch
+      mode: '655'
 
   - name: writting sentinel script
     blockinfile:
@@ -90,6 +89,3 @@
         redis-sentinel "{{ installroot }}/sentinel/sentinel_2.conf"
         redis-sentinel "{{ installroot }}/sentinel/sentinel_3.conf"
       state: present
-
-  - name: change privelige
-    shell: chmod u+x "{{ installroot }}/startSentinel.sh"

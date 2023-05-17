@@ -1,0 +1,12 @@
+---
+- name: Write Contents to Prometheus Configuration File
+  hosts: ManagedHost
+  remote_user: root
+
+  tasks:
+  - name:
+    ansible.builtin.copy:
+      src: "{{ prometheus_binary_source }}/prometheus.yml"
+      dest: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus.yml"
+      owner: "{{ username }}"
+      mode: '766'
