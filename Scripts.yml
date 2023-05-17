@@ -1,32 +1,35 @@
 ---
 - name: Connect to remote machine
-  hosts: 127.0.0.1
-  remote_user: ming
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
 
   tasks:
   - name: start_script
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+      path: "{{ installroot }}/startup.sh"
       state: touch
+      mode: '755'
+
   - name: writting start script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+      path: "{{ installroot }}/startup.sh"
       block: |
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7002/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7003/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7004/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7005/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7006/redis.conf
+        redis-server "{{ installroot }}/7001/redis.conf"
+        redis-server "{{ installroot }}/7002/redis.conf"
+        redis-server "{{ installroot }}/7003/redis.conf"
+        redis-server "{{ installroot }}/7004/redis.conf"
+        redis-server "{{ installroot }}/7005/redis.conf"
+        redis-server "{{ installroot }}/7006/redis.conf"
       state: present
 
   - name: stopScript
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/stop.sh
+      path: "{{ installroot }}/stop.sh"
       state: touch
+      mode: '755'
   - name: writting stop script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/stop.sh
+      path: "{{ installroot }}/stop.sh"
       block: |
         redis-cli -h 127.0.0.1 -p 7001 shutdown
         redis-cli -h 127.0.0.1 -p 7002 shutdown
@@ -41,55 +44,48 @@
         redis-cli -h 127.0.0.1 -p 26380 shutdown
         redis-cli -h 127.0.0.1 -p 26381 shutdown
       state: present
-  - name: change privelige
-    shell: chmod u+x /home/ming/redisPrac/ansible_redisCluster_sentinel/stop.sh
 
   - name: createCluster
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/createCluster.sh
+      path: "{{ installroot }}/createCluster.sh"
       state: touch
+      mode: '655'
   - name: writting createCluster script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/createCluster.sh
+      path: "{{ installroot }}/createCluster.sh"
       block: |
         redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006<<EOF
         yes
         EOF
       state: present
-  - name: change privelige
-    shell: chmod u+x /home/ming/redisPrac/ansible_redisCluster_sentinel/createCluster.sh
-
+      mode: '655'
 
   - name: create slave script
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startSlave.sh
+      path: "{{ installroot }}/startSlave.sh"
       state: touch
+      mode: '655'
 
   - name: writting slave script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startSlave.sh
+      path: "{{ installroot }}/startSlave.sh"
       block: |
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave1/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave2/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/slave3/redis.conf
+        redis-server "{{ installroot }}/7001/slave1/redis.conf"
+        redis-server "{{ installroot }}/7001/slave2/redis.conf"
+        redis-server "{{ installroot }}/7001/slave3/redis.conf"
       state: present
-
-  - name: change privelige
-    shell: chmod u+x /home/ming/redisPrac/ansible_redisCluster_sentinel/startSlave.sh
 
   - name: create sentinel script
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startSentinel.sh
+      path: "{{ installroot }}/startSentinel.sh"
       state: touch
+      mode: '655'
 
   - name: writting sentinel script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startSentinel.sh
+      path: "{{ installroot }}/startSentinel.sh"
       block: |
-        redis-sentinel /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_1.conf
-        redis-sentinel /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_2.conf
-        redis-sentinel /home/ming/redisPrac/ansible_redisCluster_sentinel/sentinel/sentinel_3.conf
+        redis-sentinel "{{ installroot }}/sentinel/sentinel_1.conf"
+        redis-sentinel "{{ installroot }}/sentinel/sentinel_2.conf"
+        redis-sentinel "{{ installroot }}/sentinel/sentinel_3.conf"
       state: present
-
-  - name: change privelige
-    shell: chmod u+x /home/ming/redisPrac/ansible_redisCluster_sentinel/startSentinel.sh

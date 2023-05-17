@@ -1,8 +1,8 @@
 ---
 - name: Connect to remote machine
-  hosts: 127.0.0.1
-  remote_user: ming
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
 
   tasks:
   - name: start
-    shell: /bin/bash /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+    shell: /bin/bash "{{ installroot }}/startup.sh"

@@ -1,0 +1,12 @@
+installroot: /data/software/redis
+installroot_prometheus: /data/software/prometheus
+installroot_redis_exporter: /data/software/redis_exporter
+
+prometheus_package_name: prometheus-2.37.7.linux-386
+redis_exporter_package_name: redis_exporter-v1.50.0.linux-386
+
+prometheus_binary_source: "/home/tuyiming/Downloads/{{ prometheus_package_name }}"
+redis_exporter_binary_source: "/home/tuyiming/Downloads/{{ redis_exporter_package_name }}"
+
+username: root
+groupname: root

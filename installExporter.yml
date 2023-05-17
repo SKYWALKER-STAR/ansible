@@ -1,0 +1,24 @@
+---
+- name: Install Exporter 
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Mak Directory for Redis Exporter
+    file:
+      path: "{{ installroot_redis_exporter }}"
+      state: directory
+
+
+  - name: Install Redis Exporter
+    ansible.builtin.copy:
+      src: "{{ redis_exporter_binary_source}}"
+      dest: "{{ installroot_redis_exporter }}"
+      owner: "{{ username }}"
+      group: "{{ groupname }}"
+      mode: '666'
+
+  - name: Change Exporter Mode
+    ansible.builtin.file:
+      path: "{{ installroot_redis_exporter }}/{{ redis_exporter_package_name }}/redis_exporter"
+      mode: '777'

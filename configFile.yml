@@ -1,7 +1,7 @@
 ---
 - name: Connect to remote machine
-  hosts: 127.0.0.1
-  remote_user: ming
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
 
   tasks:
   - name: Configure redis configuratio catelogs
@@ -14,72 +14,72 @@
   tasks:
   - name: 7001
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001
+      path: "{{ installroot }}/7001"
       state: directory
   - name: 7001_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/redis.conf
+      path: "{{ installroot }}/7001/redis.conf"
       state: touch
 
   - name: 7002
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7002
+      path: "{{ installroot }}/7002"
       state: directory
   - name: 7002_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7002/redis.conf
+      path: "{{ installroot }}/7002/redis.conf"
       state: touch
 
   - name: 7003
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7003
+      path: "{{ installroot }}/7003"
       state: directory
   - name: 7003_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7003/redis.conf
+      path: "{{ installroot }}/7003/redis.conf"
       state: touch
 
   - name: 7004
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7004
+      path: "{{ installroot }}/7004"
       state: directory
   - name: 7004_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7004/redis.conf
+      path: "{{ installroot }}/7004/redis.conf"
       state: touch
 
   - name: 7005
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7005
+      path: "{{ installroot }}/7005"
       state: directory
   - name: 7005_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7005/redis.conf
+      path: "{{ installroot }}/7005/redis.conf"
       state: touch
 
   - name: 7006
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7006
+      path: "{{ installroot }}/7006"
       state: directory
   - name: 7006_redis.conf
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/7006/redis.conf
+      path: "{{ installroot }}/7006/redis.conf"
       state: touch
 
   - name: start_script
     file:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+      path: "{{ installroot }}/startup.sh"
       state: touch
   - name: writting start script
     blockinfile:
-      path: /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+      path: "{{ installroot }}/startup.sh"
       block: |
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7001/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7002/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7003/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7004/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7005/redis.conf
-        redis-server /home/ming/redisPrac/ansible_redisCluster_sentinel/7006/redis.conf
+        redis-server "{{ installroot }}/7001/redis.conf"
+        redis-server "{{ installroot }}/7002/redis.conf"
+        redis-server "{{ installroot }}/7003/redis.conf"
+        redis-server "{{ installroot }}/7004/redis.conf"
+        redis-server "{{ installroot }}/7005/redis.conf"
+        redis-server "{{ installroot }}7006/redis.conf"
       state: present
   - name: change privlige
-    shell: chmod u+x /home/ming/redisPrac/ansible_redisCluster_sentinel/startup.sh
+    shell: chmod u+x "{{ installroot }}/startup.sh"

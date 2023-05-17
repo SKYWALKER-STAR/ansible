@@ -1,0 +1,3 @@
+---
+- name: Write Prometheus Configuration File
+  import_playbook: writeConfigFile_prometheus.yml
