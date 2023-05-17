@@ -15,8 +15,9 @@
       dest: "{{ installroot_prometheus }}"
       owner: "{{ username }}"
       group: "{{ groupname }}"
-      mode: '644'
+      mode: '666'
+
   - name: Change Prometheus Mode
     file:
       path: "{{ installroot_prometheus }}/{{ prometheus_package_name }}/prometheus"
-      mode: 744
+      mode: '777'
