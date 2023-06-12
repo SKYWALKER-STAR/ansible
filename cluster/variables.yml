@@ -1,0 +1,6 @@
+username: tuyiming
+usergroup: tuyiming
+
+redis_runtime: /home/tuyiming/redis
+redis_path: /usr/local/bin/
+

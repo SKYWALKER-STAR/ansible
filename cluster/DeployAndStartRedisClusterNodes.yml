@@ -1,0 +1,79 @@
+---
+- name: Create Cluster Related Configutation Files
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Create Redis Main Diretory
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+
+  - name: Create Redis Cluster Directory
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+
+  - name: Create Redis Cluster Node Diretory 
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - redis-7001
+       - redis-7002
+
+  - name: Create Redis Cluster Node-7001 Related Directories
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-7001/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - etc
+       - data
+       - bin
+       - logs
+
+  - name: Create Redis Cluster Node-7002 Related Directories
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-7002/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - etc
+       - data
+       - bin
+       - logs
+
+  - name: Write Redis Cluster Node-7001,Node-7002 Configuration File
+    ansible.builtin.blockinfile:
+      path: "{{ redis_runtime }}/cluster/redis-{{ item }}/etc/redis-{{ item }}.conf"
+      create: true
+      block: |
+        bind 0.0.0.0
+        daemonize yes
+        port {{ item }}
+        protected-mode no
+        cluster-enabled yes
+        cluster-node-timeout 15000
+        cluster-config-file "{{ redis_runtime }}/cluster/redis-{{ item }}/logs/nodes-{{ item }}.conf"
+        appendonly yes
+        dir "{{ redis_runtime }}/cluster/redis-{{ item }}"
+        appendfilename "appendonly-{{ item }}.aof"
+    loop:
+      - 7001
+      - 7002
+
+  - name: Start Cluster Nodes Independently
+    ansible.builtin.command:
+     cmd: "{{ redis_path }}/redis-server  {{ redis_runtime }}/cluster/redis-{{ item }}/etc/redis-{{ item }}.conf"
+    loop:
+      - 7001
+      - 7002
