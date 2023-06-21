@@ -1,0 +1,17 @@
+---
+- name: Stop Redis Cluster Nodes
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Stop services
+    ansible.builtin.command:
+     cmd: "{{ redis_path }}/redis-cli -h localhost -p {{ item }} shutdown"
+    loop:
+     - 7001
+     - 7002
+
+  - name: Clear Directories
+    ansible.builtin.file:
+     path: "{{ redis_runtime }}"
+     state: absent

@@ -1,0 +1,6 @@
+username: root
+usergroup: root
+
+redis_runtime: /home/ming/redis
+redis_path: /usr/local/bin/
+

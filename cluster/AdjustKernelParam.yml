@@ -1,0 +1,33 @@
+---
+- name: Kernel Adjust
+  hosts: ManagedHost
+  remote_user: root
+
+  tasks: 
+  - name: Limits
+    ansible.builtin.lineinfile:
+      path: /etc/security/limits.conf
+      line: "* {{ item.type }} {{ item.choice }} 65535 "
+      owner: root
+      group: root
+    loop:
+      - { type: 'soft',choice: 'nproc' }
+      - { type: 'hard',choice: 'nproc' }
+      - { type: 'soft',choice: 'nofile' }
+      - { type: 'hard',choice: 'noifle' }
+
+  - name: system.conf
+    ansible.builtin.lineinfile:
+      path: /etc/systemd/system.conf
+      line: "{{ item }}=65535"
+    loop:
+      - DefaultLimitNOFILE
+      - DefautLimitNPROC
+
+  - name: vm.net.core.somaxconn
+    ansible.builtin.command:
+      cmd: sysctl net.core.somaxconn=511
+
+  - name: vm.overcommit_memory
+    ansible.builtin.command:
+      cmd: sysctl vm.overcommit_memory=1
