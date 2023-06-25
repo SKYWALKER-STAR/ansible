@@ -4,3 +4,10 @@ usergroup: root
 redis_runtime: /home/ming/redis
 redis_path: /usr/local/bin/
 
+port_1: 7001
+port_2: 7002
+
+
+origin_node_port: 7001
+new_node_port: 7003
+

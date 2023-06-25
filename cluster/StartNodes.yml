@@ -1,0 +1,12 @@
+---
+- name: Start Redis Cluster nodes
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Start up
+    ansible.builtin.command:
+      cmd: "{{ redis_path }}redis-server {{ redis_runtime }}/cluster/redis-{{ item }}/etc/redis-{{ item }}.conf" 
+    loop:
+       - "{{ port_1 }}"
+       - "{{ port_2 }}"

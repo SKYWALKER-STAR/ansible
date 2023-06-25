@@ -8,8 +8,8 @@
     ansible.builtin.command:
      cmd: "{{ redis_path }}/redis-cli -h localhost -p {{ item }} shutdown"
     loop:
-     - 7001
-     - 7002
+     - "{{ port_1 }}"
+     - "{{ port_2 }}"
 
   - name: Clear Directories
     ansible.builtin.file:

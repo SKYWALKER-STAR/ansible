@@ -1,0 +1,27 @@
+---
+- name: Back AOF files
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks: 
+  - name: Create backup dir
+    ansible.builtin.file: 
+     path: "{{ redis_runtime}}/cluster/backup-{{ item }}"
+     state: directory
+     owner: "{{ username }}"
+     group: "{{ usergroup }}"
+    loop:
+      - "{{ port_1 }}"
+      - "{{ port_2 }}"
+
+
+  - name: Back Appendonly Dir
+    ansible.builtin.copy: 
+     src: "{{ redis_runtime}}/cluster/redis-{{ item }}/appendonlydir"
+     dest: "{{ redis_runtime }}/cluster/backup-{{ item }}"
+     remote_src: true
+     owner: "{{ username }}"
+     group: "{{ usergroup }}"
+    loop:
+       - "{{ port_1 }}"
+       - "{{ port_2 }}"

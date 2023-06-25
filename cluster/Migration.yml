@@ -1,0 +1,34 @@
+---
+- name: Migration
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Migrate AOF files
+    ansible.builtin.copy: 
+      src: "{{ redis_runtime }}/cluster/backup-{{ origin_node_port }}/appendonlydir"
+      dest: "{{ redis_runtime }}/cluster/redis-{{ new_node_port }}/appendonlydir"
+      remote_src: true
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+
+  - name: Change AOF file name
+    ansible.builtin.copy:
+      src: "{{ redis_runtime }}/cluster/backup-{{ origin_node_port }}/appendonlydir/appendonly-{{ origin_node_port }}.{{ item }}"
+      dest: "{{ redis_runtime }}/cluster/redis-{{ new_node_port }}/appendonlydir/appendonly-{{ new_node_port }}.{{ item }}"
+      remote_src: true
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - "aof.1.base.rdb"
+       - "aof.1.incr.aof"
+       - "aof.manifest"
+
+  - name: Change Content in manifest
+    ansible.builtin.replace: 
+      path: "{{ redis_runtime }}/cluster/redis-{{ new_node_port }}/appendonlydir/appendonly-{{ new_node_port }}.aof.manifest"
+      regexp: 'appendonly-{{ origin_node_port }}.{{ item }}'
+      replace: 'appendonly-{{ new_node_port}}.{{ item }}'
+    loop:
+       - "aof.1.base.rdb"
+       - "aof.1.incr.aof"

@@ -1,0 +1,94 @@
+--- 
+- name: Create Cluster Related Configutation Files 
+  hosts: ManagedHost
+  remote_user: "{{ username }}"
+
+  tasks:
+  - name: Create Redis Main Diretory
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+
+  - name: Create Redis Cluster Directory
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+
+  - name: Create Redis Cluster Node Diretory 
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - "redis-{{ port_1 }}"
+       - "redis-{{ port_2 }}"
+
+  - name: Create Redis Cluster "Node-{{ port_1 }}" Related Directories
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-{{ port_1 }}/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - etc
+       - data
+       - bin
+       - logs
+
+  - name: Create Redis Cluster "Node-{{ port_2 }}" Related Directories
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-{{ port_2 }}/{{ item }}"
+      state: directory
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+       - etc
+       - data
+       - bin
+       - logs
+        
+  - name: Create Redis Cluster Nodes log files
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-{{ item }}/logs/redis-{{ item }}.log"
+      state: touch
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+      - "{{ port_1 }}"
+      - "{{ port_2 }}"
+
+  - name: Create Redis Cluster auto log file
+    ansible.builtin.file:
+      path: "{{ redis_runtime }}/cluster/redis-{{ item }}/logs/nodes-{{ item }}.conf"
+      state: touch
+      owner: "{{ username }}"
+      group: "{{ usergroup }}"
+    loop:
+      - "{{ port_1 }}"
+      - "{{ port_2 }}"
+
+  - name: Write Redis Cluster " Node-{{ port_1 }},Node-{{ port_2 }} Configuration File
+    ansible.builtin.blockinfile:
+      path: "{{ redis_runtime }}/cluster/redis-{{ item }}/etc/redis-{{ item }}.conf"
+      create: true
+      block: |
+        bind 0.0.0.0
+        daemonize yes
+        port {{ item }}
+        protected-mode no
+        cluster-enabled yes
+        cluster-node-timeout 15000
+        cluster-config-file "{{ redis_runtime }}/cluster/redis-{{ item }}/logs/nodes-{{ item }}.conf"
+        appendonly yes
+        logfile "{{ redis_runtime }}/cluster/redis-{{ item }}/logs/redis-{{ item }}.log"
+        dir "{{ redis_runtime }}/cluster/redis-{{ item }}"
+        appendfilename "appendonly-{{ item }}.aof"
+        appenddirname "appendonlydir"
+    loop:
+      - "{{ port_1 }}"
+      - "{{ port_2 }}"
